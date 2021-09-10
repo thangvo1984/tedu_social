@@ -27,9 +27,18 @@ class App {
 
   private connectToDatabase() {
     try {
-      const connectString = `mongodb+srv://thangvc:${encodeURIComponent(
-        "thang123456789"
-      )}@cluster0.nlnwi.mongodb.net/tedu_social?retryWrites=true&w=majority`;
+      const connectString = process.env.MONGODB_URI;
+      console.log("connectString======", connectString);
+      console.log("process.env======", process.env);
+
+      if (!connectString) {
+        console.log("Connection string is invalid");
+        return;
+      }
+
+      // const connectString =
+      //   "mongodb+srv://thangvc:thang123456789@cluster0.nlnwi.mongodb.net/tedu_social?retryWrites=true&w=majority";
+
       mongoose.connect(connectString);
       console.log("Database connected");
     } catch (error) {
