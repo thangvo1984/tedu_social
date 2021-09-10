@@ -1,0 +1,11 @@
+{
+  "name": "tedu_social",
+  "version": "1.0.0",
+  "description": "A mini social network for TEDU Community",
+  "main": "src/server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chien Thang",
+  "license": "MIT"
+}
