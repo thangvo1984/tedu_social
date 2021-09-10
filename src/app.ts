@@ -1,5 +1,6 @@
 import express from "express";
 import { Route } from "core/interfaces";
+import mongoose from "mongoose";
 
 class App {
   public app: express.Application;
@@ -9,6 +10,7 @@ class App {
     this.app = express();
     this.port = process.env.PORT || 5000;
     this.initializeRoutes(routes);
+    this.connectToDatabase();
   }
 
   public listen() {
@@ -21,6 +23,18 @@ class App {
     routes.forEach((route) => {
       this.app.use("/", route.router);
     });
+  }
+
+  private connectToDatabase() {
+    try {
+      const connectString = `mongodb+srv://thangvc:${encodeURIComponent(
+        "thang123456789"
+      )}@cluster0.nlnwi.mongodb.net/tedu_social?retryWrites=true&w=majority`;
+      mongoose.connect(connectString);
+      console.log("Database connected");
+    } catch (error) {
+      console.log("Connect to database error", error);
+    }
   }
 }
 
