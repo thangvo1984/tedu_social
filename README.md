@@ -18,3 +18,7 @@
 - git remote add origin https://github.com/thangvo1984/tedu_social
 - git push -u origin master
 - test commit
+
+### Lesson 10
+- tsc --init
+- reference: https://www.typescriptlang.org/tsconfig
