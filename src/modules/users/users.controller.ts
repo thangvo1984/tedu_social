@@ -6,6 +6,10 @@ import UserService from "./users.service";
 export default class UsersController {
   private userService = new UserService();
   public register = async (req: Request, res: Response, next: NextFunction) => {
+    console.log(
+      "enter enter============================================================controller",
+      req
+    );
     try {
       const model: RegisterDto = req.body;
       const tokenData: TokenData = await this.userService.createUser(model);
