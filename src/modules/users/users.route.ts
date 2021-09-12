@@ -21,5 +21,17 @@ export default class UsersRoute implements Route {
       validationMiddleware(RegisterDto, true),
       this.userController.register
     ); // POST: http://localhost:5000/api/users
+
+    this.router.put(
+      this.path + "/:id",
+      validationMiddleware(RegisterDto, true),
+      this.userController.updateUser
+    );
+
+    this.router.get(
+      this.path + "/:id",
+      validationMiddleware(RegisterDto, true),
+      this.userController.getUserById
+    );
   }
 }
