@@ -7,7 +7,6 @@ const validationMiddleware = (
   type: any,
   skipMissingProperties = false
 ): RequestHandler => {
-  console.log("enter==========================validate");
   return (req: Request, res: Response, next: NextFunction) => {
     validate(plainToClass(type, req.body), {
       skipMissingProperties: skipMissingProperties,
@@ -20,8 +19,6 @@ const validationMiddleware = (
           .join(", ");
         next(new HttpException(400, message));
       } else {
-        console.log("khong loi");
-
         next();
       }
     });

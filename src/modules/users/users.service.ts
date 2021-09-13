@@ -6,6 +6,7 @@ import { HttpException } from "@core/exceptions";
 import gravatar from "gravatar";
 import bcryptjs from "bcryptjs";
 import IUser from "./users.interface";
+import { IPagination } from "@core/interfaces";
 import jwt from "jsonwebtoken";
 
 class UserService {
@@ -88,6 +89,51 @@ class UserService {
     }
 
     return user;
+  }
+
+  public async getAll(): Promise<IUser[]> {
+    const users = await this.userSchema.find();
+    return users;
+  }
+
+  public async getAllPaging(
+    keyword: string,
+    page: number
+  ): Promise<IPagination<IUser>> {
+    const pageSize: number = Number(process.env.PAGE_SIZE || 10);
+    let query;
+    if (keyword) {
+      query = this.userSchema
+        .find({
+          $or: [
+            {
+              email: keyword,
+            },
+            {
+              first_name: keyword,
+            },
+            {
+              last_name: keyword,
+            },
+          ],
+        })
+        .sort({ date: -1 });
+    } else {
+      query = this.userSchema.find().sort({ date: -1 });
+    }
+    const users = await query
+      .skip((page - 1) * pageSize)
+      .limit(pageSize)
+      .exec();
+
+    const rowCount = await query.countDocuments().exec();
+
+    return {
+      total: rowCount,
+      page: page,
+      pageSize: pageSize,
+      items: users,
+    };
   }
 
   private createToken(user: IUser): TokenData {

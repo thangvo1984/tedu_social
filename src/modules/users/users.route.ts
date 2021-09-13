@@ -33,5 +33,17 @@ export default class UsersRoute implements Route {
       validationMiddleware(RegisterDto, true),
       this.userController.getUserById
     );
+
+    this.router.get(
+      this.path,
+      validationMiddleware(RegisterDto, true),
+      this.userController.getAll
+    );
+
+    this.router.get(
+      this.path + "/paging/:page",
+      validationMiddleware(RegisterDto, true),
+      this.userController.getAllPagination
+    );
   }
 }
