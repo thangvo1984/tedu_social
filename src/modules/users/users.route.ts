@@ -2,7 +2,7 @@ import { Route } from "@core/interfaces";
 import { Router } from "express";
 import RegisterDto from "./dtos/register.dto";
 import UserController from "./users.controller";
-import { validationMiddleware } from "@core/middleware";
+import { authMiddleware, validationMiddleware } from "@core/middleware";
 
 export default class UsersRoute implements Route {
   public path = "/api/users";
@@ -42,8 +42,13 @@ export default class UsersRoute implements Route {
 
     this.router.get(
       this.path + "/paging/:page",
-      validationMiddleware(RegisterDto, true),
       this.userController.getAllPagination
+    );
+
+    this.router.delete(
+      this.path + "/:id",
+      authMiddleware,
+      this.userController.deleteUser
     );
   }
 }

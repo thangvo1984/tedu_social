@@ -61,17 +61,28 @@ export default class UsersController {
     res: Response,
     next: NextFunction
   ) => {
-    const a = "a";
     try {
       const page: number = Number(req.params.page);
       const keyword = req.query.keyword || "";
-      if (req.params) {
-      }
+
       const paginationResult = await this.userService.getAllPaging(
         keyword.toString(),
         page
       );
       res.status(200).json(paginationResult);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public deleteUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.userService.deleteUser(req.params.id);
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
