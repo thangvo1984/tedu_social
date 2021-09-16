@@ -39,6 +39,26 @@ class ProfileRoute implements Route {
       authMiddleware,
       this.profileController.deleteProfile
     );
+    this.router.put(
+      this.path + "/experience",
+      authMiddleware,
+      this.profileController.createExperience
+    );
+    this.router.delete(
+      this.path + "/experience/:exp_id",
+      authMiddleware,
+      this.profileController.deleteExperience
+    );
+    this.router.put(
+      this.path + "/education",
+      authMiddleware,
+      this.profileController.createEducation
+    );
+    this.router.delete(
+      this.path + "/education/:edu_id",
+      authMiddleware,
+      this.profileController.deleteEducation
+    );
   }
 }
 

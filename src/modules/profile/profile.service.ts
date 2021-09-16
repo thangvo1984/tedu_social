@@ -1,8 +1,15 @@
 import { HttpException } from "@core/exceptions";
 import { IUser, UserSchema } from "@modules/users";
-import { IProfile, ISocial } from "./profile.interface";
+import {
+  IEducation,
+  IExperience,
+  IProfile,
+  ISocial,
+} from "./profile.interface";
 import ProfileSchema from "./profile.model";
 import CreateProfileDto from "./dtos/create_profile.dto";
+import AddExperienceDto from "./dtos/add_experience.dto";
+import AddEducationDto from "./dtos/add_education.dto";
 // import normalizeUrl from "normalize-url";
 
 class ProfileService {
@@ -92,6 +99,57 @@ class ProfileService {
       .exec();
     return profiles;
   }
+
+  public addExperience = async (
+    userId: string,
+    experience: AddExperienceDto
+  ) => {
+    const newExp = {
+      ...experience,
+    };
+    const profile = await ProfileSchema.findOne({ user: userId }).exec();
+    if (!profile)
+      throw new HttpException(400, "There is not profile for this user");
+    profile.experience.unshift(newExp as IExperience);
+    await profile.save();
+
+    return profile;
+  };
+
+  public deleteExperience = async (userId: string, experienceId: string) => {
+    const profile = await ProfileSchema.findOne({ user: userId }).exec();
+    if (!profile)
+      throw new HttpException(400, "There is not profile for this user");
+    profile.experience = profile.experience.filter(
+      (exp) => exp._id.toString() !== experienceId
+    );
+    await profile.save();
+    return profile;
+  };
+
+  public addEducation = async (userId: string, education: AddEducationDto) => {
+    const newEdu = {
+      ...education,
+    };
+    const profile = await ProfileSchema.findOne({ user: userId }).exec();
+    if (!profile)
+      throw new HttpException(400, "There is not profile for this user");
+    profile.education.unshift(newEdu as IEducation);
+    await profile.save();
+
+    return profile;
+  };
+
+  public deleteEducation = async (userId: string, educationId: string) => {
+    const profile = await ProfileSchema.findOne({ user: userId }).exec();
+    if (!profile)
+      throw new HttpException(400, "There is not profile for this user");
+    profile.education = profile.education.filter(
+      (edu) => edu._id.toString() !== educationId
+    );
+    await profile.save();
+    return profile;
+  };
 }
 
 export default ProfileService;
